@@ -13,6 +13,7 @@ export const llms =
     ? (process.env.VITE_LLM_MODELS?.split(',') as string[])
     : [
         'openai_gpt_4o',
+        'deepseek-reasoner',
         'openai_gpt_4o_mini',
         'openai_gpt_4.1',
         'openai_gpt_4.1_mini',
@@ -254,7 +255,7 @@ export const RETRY_OPIONS = [
   'delete_entities_and_start_from_beginning',
   'start_from_last_processed_position',
 ];
-export const batchSize: number = Number(process.env.VITE_BATCH_SIZE ?? '2');
+export const batchSize: number = Number(process.env.VITE_BATCH_SIZE ?? '1');
 
 // Graph Constants
 export const document = `+ [docs]`;

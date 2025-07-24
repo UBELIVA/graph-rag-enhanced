@@ -1,0 +1,39 @@
+[
+  {
+    "question": "eVTOL 是什么？",
+    "reference_answer": "eVTOL（Electric Vertical Take-off and Landing）是一种电动垂直起降飞行器，通常采用非常规设计，将空气动力学与电动推进技术相结合。它可以不依赖传统跑道完成起降，被视为城市低空交通未来的重要载体。"
+  },
+  {
+    "question": "eVTOL 的全称是什么？",
+    "reference_answer": "eVTOL 的全称是 Electric Vertical Take-off and Landing。"
+  },
+  {
+    "question": "eVTOL 有哪些特点？",
+    "reference_answer": "eVTOL 具备安全性高、噪音低、零碳排放、运营成本低、智能化水平高等特点，适合城市短途空中出行。其典型特征包括垂直起降、电驱动、结构紧凑等，适用于缓解城市交通拥堵问题。"
+  },
+  {
+    "question": "eVTOL 可以飞多远？",
+    "reference_answer": "eVTOL 的飞行距离依机型而定，部分数据指出载人飞行器航程可达600公里（如图表所示），但实际使用场景中多为30-50公里的城市短途航线为主，续航能力仍受电池能量密度限制。"
+  },
+  {
+    "question": "eVTOL 的主要应用场景有哪些？",
+    "reference_answer": "eVTOL 主要应用于城市空中交通（UAM），包括城市通勤、机场接驳、物流配送、应急救援、旅游观光等。报告指出其能够满足城市短途高频出行的需求，并成为“低空经济+”的重要组成。"
+  },
+  {
+    "question": "eVTOL 是电动的吗？",
+    "reference_answer": "是的，eVTOL 是以电驱动为主要动力形式的飞行器。包括纯电动与混合电动两种形式，具有零排放、低噪音、能源效率高等优势。"
+  },
+  {
+    "question": "中国有哪些 eVTOL 公司？",
+    "reference_answer": "中国的 eVTOL 企业包括亿航智能、沃飞长空、峰飞航空、御风未来、小鹏汇天、时的科技等。这些公司分别开展了载人和无人eVTOL机型的研发，并在多个城市开展示范飞行或商业化试点。"
+  },
+  {
+    "question": "国外有哪些 eVTOL 公司？",
+    "reference_answer": "国外的代表性企业包括 Joby Aviation、Lilium、Volocopter、Archer、Beta Technologies 等。这些公司在北美和欧洲市场推进飞行测试与适航认证，并与政府合作开展城市空中交通示范。"
+  },
+  {
+    "question": "eVTOL 什么时候能正式商用？",
+    "reference_answer": "根据报告推测，eVTOL 将在 2025 年左右进入商业试点，2030 年实现初步规模化应用。部分企业如亿航智能已获特许飞行许可，并在推进适航认证和商业运营。"
+  }
+]
+

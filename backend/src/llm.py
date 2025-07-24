@@ -210,45 +210,52 @@ async def get_graph_document_list(
     return graph_document_list
 
 async def get_graph_from_llm(model, chunkId_chunkDoc_list, allowedNodes, allowedRelationship, chunks_to_combine, additional_instructions=None):
-   try:
-       llm, model_name = get_llm(model)
-       logging.info(f"Using model: {model_name}")
-    
-       combined_chunk_document_list = get_combined_chunks(chunkId_chunkDoc_list, chunks_to_combine)
-       logging.info(f"Combined {len(combined_chunk_document_list)} chunks")
-    
-       allowed_nodes = [node.strip() for node in allowedNodes.split(',') if node.strip()]
-       logging.info(f"Allowed nodes: {allowed_nodes}")
-    
-       allowed_relationships = []
-       if allowedRelationship:
-           items = [item.strip() for item in allowedRelationship.split(',') if item.strip()]
-           if len(items) % 3 != 0:
-               raise LLMGraphBuilderException("allowedRelationship must be a multiple of 3 (source, relationship, target)")
-           for i in range(0, len(items), 3):
-               source, relation, target = items[i:i + 3]
-               if source not in allowed_nodes or target not in allowed_nodes:
-                   raise LLMGraphBuilderException(
-                       f"Invalid relationship ({source}, {relation}, {target}): "
-                       f"source or target not in allowedNodes"
-                   )
-               allowed_relationships.append((source, relation, target))
-           logging.info(f"Allowed relationships: {allowed_relationships}")
-       else:
-           logging.info("No allowed relationships provided")
+    import json
+    import os
 
-       graph_document_list = await get_graph_document_list(
-           llm,
-           combined_chunk_document_list,
-           allowed_nodes,
-           allowed_relationships,
-           additional_instructions
-       )
-       logging.info(f"Generated {len(graph_document_list)} graph documents")
-       return graph_document_list
-   except Exception as e:
-       logging.error(f"Error in get_graph_from_llm: {e}", exc_info=True)
-       raise LLMGraphBuilderException(f"Error in getting graph from llm: {e}")
+    try:
+        llm, model_name = get_llm(model)
+        logging.info(f"Using model: {model_name}")
+    
+        # ✅ 组合 chunk
+        combined_chunk_document_list = get_combined_chunks(chunkId_chunkDoc_list, chunks_to_combine)
+        logging.info(f"Combined {len(combined_chunk_document_list)} chunks")
+
+        # ✅ 正常流程继续
+        allowed_nodes = [node.strip() for node in allowedNodes.split(',') if node.strip()]
+        logging.info(f"Allowed nodes: {allowed_nodes}")
+    
+        allowed_relationships = []
+        if allowedRelationship:
+            items = [item.strip() for item in allowedRelationship.split(',') if item.strip()]
+            if len(items) % 3 != 0:
+                raise LLMGraphBuilderException("allowedRelationship must be a multiple of 3 (source, relationship, target)")
+            for i in range(0, len(items), 3):
+                source, relation, target = items[i:i + 3]
+                if source not in allowed_nodes or target not in allowed_nodes:
+                    raise LLMGraphBuilderException(
+                        f"Invalid relationship ({source}, {relation}, {target}): "
+                        f"source or target not in allowedNodes"
+                    )
+                allowed_relationships.append((source, relation, target))
+            logging.info(f"Allowed relationships: {allowed_relationships}")
+        else:
+            logging.info("No allowed relationships provided")
+
+        graph_document_list = await get_graph_document_list(
+            llm,
+            combined_chunk_document_list,
+            allowed_nodes,
+            allowed_relationships,
+            additional_instructions
+        )
+
+        logging.info(f"Generated {len(graph_document_list)} graph documents")
+        return graph_document_list
+
+    except Exception as e:
+        logging.error(f"❌ Error in get_graph_from_llm: {e}", exc_info=True)
+        raise LLMGraphBuilderException(f"Error in getting graph from llm: {e}")
 
 def sanitize_additional_instruction(instruction: str) -> str:
    """

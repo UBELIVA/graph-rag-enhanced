@@ -436,9 +436,39 @@ def process_chat_response(messages, history, question, model, graph, document_na
         llm, doc_retriever, model_version = setup_chat(model, graph, document_names, chat_mode_settings)
         
         docs,transformed_question = retrieve_documents(doc_retriever, messages)  
-
+        
+        from pathlib import Path
         if docs:
             content, result, total_tokens,formatted_docs = process_documents(docs, question, messages, llm, model, chat_mode_settings)
+
+            try:
+                LOG_DIR = "logs"
+                LOG_FILE = "retrieved_chunks_log.jsonl"
+                log_path = Path(LOG_DIR) / LOG_FILE
+                log_path.parent.mkdir(parents=True, exist_ok=True)
+
+                retrieved_chunk_record = {
+                    "file_names": list({doc.metadata.get("source", "unknown") for doc in docs}),
+                    "question": question,
+                    "model_answer": content,
+                    "retrieved_chunks": [
+                        {
+                            "content": doc.page_content,
+                            "score": round(doc.metadata.get("score", 0), 4),
+                            "source": doc.metadata.get("source", "unknown")
+                        }
+                        for doc in docs
+                    ],
+                    "timestamp": str(datetime.now())
+                }
+
+                with open(log_path, "a", encoding="utf-8") as f:
+                    f.write(json.dumps(retrieved_chunk_record, ensure_ascii=False) + "\n")
+
+                logging.info("✅ Retrieved chunk record saved.")
+            except Exception as e:
+                logging.error(f"❌ Failed to save retrieved chunk record: {e}")
+
         else:
             content = "I couldn't find any relevant documents to answer your question."
             result = {"sources": list(), "nodedetails": list(), "entities": list()}

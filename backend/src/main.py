@@ -32,6 +32,7 @@ import shutil
 import urllib.parse
 import json
 from src.shared.llm_graph_builder_exception import LLMGraphBuilderException
+from reranker import Reranker 
 
 warnings.filterwarnings("ignore")
 load_dotenv()
@@ -481,7 +482,23 @@ async def processing_chunks(chunkId_chunkDoc_list,graph,uri, userName, password,
   logging.info("Get graph document list from models")
   
   start_entity_extraction = time.time()
-  graph_documents =  await get_graph_from_llm(model, chunkId_chunkDoc_list, allowedNodes, allowedRelationship, chunks_to_combine, additional_instructions)
+
+  reranker = Reranker()
+  chunk_texts = [item["chunk_doc"].page_content for item in chunkId_chunkDoc_list]
+  reranked_texts = reranker.rerank(file_name, chunk_texts, top_k=10)
+
+# 把 reranked_texts 映射回原始 chunkId_chunkDoc_list
+  filtered_chunkId_chunkDoc_list = []
+  for text in reranked_texts:
+      for item in chunkId_chunkDoc_list:
+          if item["chunk_doc"].page_content == text:
+              filtered_chunkId_chunkDoc_list.append(item)
+              break
+
+# 再送入 LLM
+  graph_documents = await get_graph_from_llm(
+      model, filtered_chunkId_chunkDoc_list, allowedNodes, allowedRelationship, chunks_to_combine, additional_instructions
+  )  
   end_entity_extraction = time.time()
   elapsed_entity_extraction = end_entity_extraction - start_entity_extraction
   logging.info(f'Time taken to extract enitities from LLM Graph Builder: {elapsed_entity_extraction:.2f} seconds')
