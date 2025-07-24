@@ -217,11 +217,10 @@ async def get_graph_from_llm(model, chunkId_chunkDoc_list, allowedNodes, allowed
         llm, model_name = get_llm(model)
         logging.info(f"Using model: {model_name}")
     
-        # ✅ 组合 chunk
+        # combine chunks
         combined_chunk_document_list = get_combined_chunks(chunkId_chunkDoc_list, chunks_to_combine)
         logging.info(f"Combined {len(combined_chunk_document_list)} chunks")
 
-        # ✅ 正常流程继续
         allowed_nodes = [node.strip() for node in allowedNodes.split(',') if node.strip()]
         logging.info(f"Allowed nodes: {allowed_nodes}")
     

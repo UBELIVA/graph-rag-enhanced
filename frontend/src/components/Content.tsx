@@ -234,18 +234,13 @@ const Content: React.FC<ContentProps> = ({
     }
   }, [connectionStatus, isAuthenticated, isFirstTimeUser]);
     const handleDropdownChange = (selectedOption: OptionType | null | void) => {
-    // 首先，确保有合法的选项值
         if (selectedOption?.value) {
-      // 更新全局的 model state (这一步是好的，保持原样)
           setModel(selectedOption?.value);
 
-      // 更新文件列表中每个文件的 model 属性
           setFilesData((prevfiles) => {
             return prevfiles.map((curfile) => {
               return {
                 ...curfile,
-            // 核心改动：不再检查文件状态，直接使用新选择的模型。
-            // 这样可以确保无论文件是什么状态，它的模型都会被更新为您最新的选择。
                 model: selectedOption.value,
               };
             });
