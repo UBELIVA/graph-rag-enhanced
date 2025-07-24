@@ -4,7 +4,7 @@ Graph-RAG Enhanced is a streamlined and customized version of neo4j-labs/llm-gra
 
 This version is designed for local development and private use, with improvements to chunking, environment setup, and evaluation flexibility.
 
-Key Improvements
+Key Improvements/n
 Based entirely on OpenAI LLMs (e.g., gpt-4o, gpt-3.5-turbo)
 
 YouTube and GCS sources removed for cleaner dependencies
@@ -40,6 +40,7 @@ Neo4j 5.23+ with APOC installed
 OpenAI API key
 
 **Backend Setup**
+
 cd backend
 cp example.env .env
 python -m venv envName
